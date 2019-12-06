@@ -13,6 +13,6 @@ config = {
 }
 
 user_config = {
-    'fields': ('surname', 'name', 'birth_date', 'birth_place', 'scan_link', 'save'),
+    'fields': ('surname', 'name', 'birth_date', 'birth_place', 'draft_date', 'scan_link', 'save'),
     'click_button': "span[class='next pager-icon fs-civ-circle-chevron-right enabled']",
 }
