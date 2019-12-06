@@ -1,0 +1,9 @@
+entrypoints==0.3
+flake8==3.7.9
+mccabe==0.6.1
+PyAudio==0.2.11
+pycodestyle==2.5.0
+pyflakes==2.1.1
+selenium==3.141.0
+SpeechRecognition==3.8.1
+urllib3==1.25.7
