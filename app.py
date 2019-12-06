@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from utils.mic import await_for_voice_command
+from utils.storage import Storage
 
 
 class IGeneiApp(ABC):
@@ -23,6 +24,7 @@ class GeneiAppSelenium(IGeneiApp):
         self._config = config
         self._driver = self._init_browser_driver()
         self._user_input_cache = {}
+        self._storage = Storage(config['common']['storage_dir'])
 
     def _init_browser_driver(self):
         chrome_options = Options()
@@ -32,10 +34,10 @@ class GeneiAppSelenium(IGeneiApp):
         driver = webdriver.Chrome(config['driverPath'], chrome_options=chrome_options)
         return driver
 
-    @staticmethod
-    def _save(data):
+    def _save(self, data):
         print('saving...')
         pprint(data, indent=4)
+        self._storage.add(data)
         print('saved!')
         print('')
 
@@ -71,7 +73,8 @@ class GeneiAppSelenium(IGeneiApp):
                     self._click_next_page()
                     continue
                 else:
-                    print(f'you said {speech_command}, bye bye!')
+                    self._storage.dump()
+                    print(f'you said {speech_command}, dumped {len(self._storage)} items, bye bye!')
                     break
 
             if field == 'scan_link':
@@ -79,6 +82,8 @@ class GeneiAppSelenium(IGeneiApp):
                 continue
 
             user_input = self._prompt(field)
+            if user_input:
+                user_input = user_input.capitalize()
             person[field] = self._autocomplete_missing(
                 field, value=user_input, use_fields=('birth_date',))
 

@@ -6,6 +6,9 @@ config = {
                 'debuggerAddress': '127.0.0.1:9222',
             }
         }
+    },
+    'common': {
+        'storage_dir': 'data',
     }
 }
 
