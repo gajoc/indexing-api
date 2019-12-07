@@ -6,7 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from config import VoiceCommand
-from utils.mic import await_for_voice_command
+from utils.mic import await_for_voice_command, get_voice_command
 from utils.storage import Storage
 
 
@@ -68,7 +68,7 @@ class GeneiAppSelenium(IGeneiApp):
                 self._save(person)
                 person = {}
                 self._click_next_page()
-                speech = await_for_voice_command()
+                speech = get_voice_command()
                 command = self._to_command.get(speech)
 
                 # click next scan until copy, next or mark as unreadable is needed
@@ -87,7 +87,7 @@ class GeneiAppSelenium(IGeneiApp):
                     person = {}
 
                     self._click_next_page()
-                    speech = await_for_voice_command()
+                    speech = get_voice_command()
                     command = self._to_command.get(speech)
 
                 if command == VoiceCommand.DATA:

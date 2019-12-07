@@ -4,7 +4,7 @@ import speech_recognition as sr
 def await_for_voice_command():
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print('Say `next` to continue or `copy` to attach previous data to current link!')
+        print('Say one of the commands: data, copy, next, not clear!')
         r.adjust_for_ambient_noise(source)
         audio = r.listen(source)
     try:
@@ -19,3 +19,12 @@ def await_for_voice_command():
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
         return
+
+
+def get_voice_command():
+    command = await_for_voice_command()
+    while not command:
+        print('Please repeat command!')
+        command = await_for_voice_command()
+
+    return command
