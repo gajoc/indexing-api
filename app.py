@@ -5,6 +5,7 @@ from pprint import pprint
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from config import VoiceCommand
 from utils.mic import await_for_voice_command
 from utils.storage import Storage
 
@@ -16,15 +17,13 @@ class IGeneiApp(ABC):
 
 
 class GeneiAppSelenium(IGeneiApp):
-    '''
-    chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\selenum\AutomationProfile"
-    '''
 
     def __init__(self, **config):
         self._config = config
         self._driver = self._init_browser_driver()
         self._user_input_cache = {}
         self._storage = Storage(config['common']['storage_dir'])
+        self._to_command = config['voice_command_translator'][config['voice_language']]
 
     def _init_browser_driver(self):
         chrome_options = Options()
@@ -69,31 +68,33 @@ class GeneiAppSelenium(IGeneiApp):
                 self._save(person)
                 person = {}
                 self._click_next_page()
-                speech_command = await_for_voice_command()
+                speech = await_for_voice_command()
+                command = self._to_command.get(speech)
 
-                # click next scan until copy, skip or mark as unreadable is needed
-                while speech_command in ('copy', 'next', 'unclear'):
+                # click next scan until copy, next or mark as unreadable is needed
+                while command in (VoiceCommand.COPY, VoiceCommand.NEXT, VoiceCommand.UNREADABLE):
                     person = {}
-                    if speech_command == 'copy':
+                    if command == VoiceCommand.COPY:
                         person = self._storage.get_previous_copied()
-                        person['warning'] = 'copy'
-                    elif speech_command == 'unclear':
-                        person['warning'] = 'unclear/unreadable'
-                    elif speech_command == 'next':
-                        person['warning'] = 'next/skipped'
+                        person['warning'] = speech
+                    elif command == VoiceCommand.UNREADABLE:
+                        person['warning'] = speech
+                    elif command == VoiceCommand.NEXT:
+                        person['warning'] = speech
 
                     person['scan_link'] = self._driver.current_url
                     self._save(person)
                     person = {}
 
                     self._click_next_page()
-                    speech_command = await_for_voice_command()
+                    speech = await_for_voice_command()
+                    command = self._to_command.get(speech)
 
-                if speech_command == 'continue':
+                if command == VoiceCommand.DATA:
                     continue
                 else:
                     self._storage.dump()
-                    print(f'you said {speech_command}, dumped {len(self._storage)} items, bye bye!')
+                    print(f'you said {speech}, dumped {len(self._storage)} items, bye bye!')
                     break
 
             if field == 'scan_link':

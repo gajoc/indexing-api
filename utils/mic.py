@@ -5,7 +5,8 @@ def await_for_voice_command():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print('Say `next` to continue or `copy` to attach previous data to current link!')
-        audio = r.listen(source, timeout=5)
+        r.adjust_for_ambient_noise(source)
+        audio = r.listen(source)
     try:
         voice_command = r.recognize_google(audio, language='en')
         if voice_command:
