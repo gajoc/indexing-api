@@ -49,8 +49,8 @@ class GeneiAppSelenium(IGeneiApp):
         fields = self._config['fields']
         return cycle(fields)
 
-    def _autocomplete_missing(self, field, value, use_fields):
-        if field not in use_fields:
+    def _autocomplete_missing(self, field, value, autocomplete):
+        if field not in autocomplete:
             return value
         if value:
             self._user_input_cache[field] = value
@@ -105,7 +105,7 @@ class GeneiAppSelenium(IGeneiApp):
             if user_input:
                 user_input = user_input.capitalize()
             person[field] = self._autocomplete_missing(
-                field, value=user_input, use_fields=('birth_date',))
+                field, value=user_input, autocomplete=self._config.get('autocomplete_fields', ()))
 
     def _click_next_page(self):
         e = self._driver.find_element_by_css_selector(self._config['click_button'])

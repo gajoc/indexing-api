@@ -8,7 +8,7 @@ def await_for_voice_command():
         r.adjust_for_ambient_noise(source)
         audio = r.listen(source)
     try:
-        voice_command = r.recognize_google(audio, language='en')
+        voice_command = r.recognize_google(audio, language='en_gb')
         if voice_command:
             voice_command = voice_command.lower()
         print("Google Speech Recognition thinks you said " + voice_command)

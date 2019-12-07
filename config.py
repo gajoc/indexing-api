@@ -42,7 +42,8 @@ config = {
 }
 
 user_config = {
-    'fields': ('surname', 'name', 'birth_date', 'birth_place', 'draft_date', 'scan_link', 'save'),
+    'fields': ('surname', 'name', 'birth_place', 'birth_date', 'scan_link', 'save'),
+    'autocomplete_fields': ('birth_date',),
     'click_button': "span[class='next pager-icon fs-civ-circle-chevron-right enabled']",
     'voice_language': Language.EN,
 }
