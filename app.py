@@ -6,7 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from config import VoiceCommand
-from utils.mic import await_for_voice_command, get_voice_command
+from utils.mic import get_voice_command
 from utils.storage import Storage
 
 
@@ -34,11 +34,10 @@ class GeneiAppSelenium(IGeneiApp):
         return driver
 
     def _save(self, data):
-        print('saving...')
+        print('zapisywanie...')
         pprint(data, indent=4)
         self._storage.add(data)
-        print('saved!')
-        print('')
+        print("zapisano!\n")
 
     @staticmethod
     def _prompt(text):
@@ -58,6 +57,7 @@ class GeneiAppSelenium(IGeneiApp):
         return self._user_input_cache.get(field, value)
 
     def run(self):
+        self._welcome()
         fields = self._get_fields_generator()
         person = {}
 
@@ -76,11 +76,11 @@ class GeneiAppSelenium(IGeneiApp):
                     person = {}
                     if command == VoiceCommand.COPY:
                         person = self._storage.get_previous_copied()
-                        person['warning'] = speech
+                        person['info'] = speech
                     elif command == VoiceCommand.UNREADABLE:
-                        person['warning'] = speech
+                        person['info'] = speech
                     elif command == VoiceCommand.NEXT:
-                        person['warning'] = speech
+                        person['info'] = speech
 
                     person['scan_link'] = self._driver.current_url
                     self._save(person)
@@ -91,10 +91,12 @@ class GeneiAppSelenium(IGeneiApp):
                     command = self._to_command.get(speech)
 
                 if command == VoiceCommand.DATA:
+                    person['info'] = speech
                     continue
                 else:
                     self._storage.dump()
-                    print(f'you said {speech}, dumped {len(self._storage)} items, bye bye!')
+                    print(f'Powiedziałeś {speech}, kończymy, zapisano {len(self._storage)} elementów, bye bye!')
+                    print(f'Genei, 2019, Paweł Maciejski.')
                     break
 
             if field == 'scan_link':
@@ -110,4 +112,9 @@ class GeneiAppSelenium(IGeneiApp):
     def _click_next_page(self):
         e = self._driver.find_element_by_css_selector(self._config['click_button'])
         e.click()
-        print(f'next page was auto clicked')
+        print(f'Kliknąłem automatycznie następną stronę')
+
+    @staticmethod
+    def _welcome():
+        print('\nWitaj w Genei, przygotowałeś skany z FS? Zaczynamy! ')
+        print('Wprowadź dane pierwszej osoby.\n')

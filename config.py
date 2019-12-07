@@ -36,14 +36,17 @@ config = {
             'dane': VoiceCommand.DATA,
             'kopia': VoiceCommand.COPY,
             'następny': VoiceCommand.NEXT,
-            'nieczytelny': VoiceCommand.UNREADABLE
+            'następne': VoiceCommand.NEXT,
+            'nieczytelny': VoiceCommand.UNREADABLE,
+            'nieczytelne': VoiceCommand.UNREADABLE,
         },
     }
 }
 
 user_config = {
-    'fields': ('surname', 'name', 'birth_place', 'birth_date', 'scan_link', 'save'),
+    'fields': ('nazwisko', 'imiona', 'miejsce_ur', 'data_ur', 'scan_link', 'save'),
+    # 'fields': ('surname', 'name', 'birth_place', 'birth_date', 'scan_link', 'save'),
     'autocomplete_fields': ('birth_date',),
     'click_button': "span[class='next pager-icon fs-civ-circle-chevron-right enabled']",
-    'voice_language': Language.EN,
+    'voice_language': Language.PL,
 }
