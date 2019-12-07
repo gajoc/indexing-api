@@ -15,7 +15,7 @@ class Storage:
         entity['created_utc'] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
         self._store.append(entity)
 
-    def get_previous(self):
+    def get_previous_copied(self):
         return self._store[-1].copy()
 
     def dump(self):

@@ -68,9 +68,19 @@ class GeneiAppSelenium(IGeneiApp):
             if field == 'save':
                 self._save(person)
                 person = {}
+                self._click_next_page()
                 speech_command = await_for_voice_command()
-                if speech_command == 'Next':
+
+                # copy last person until user says copy
+                while speech_command == 'copy':
+                    person = self._storage.get_previous_copied()
+                    person['scan_link'] = self._driver.current_url
+                    self._save(person)
+                    person = {}
                     self._click_next_page()
+                    speech_command = await_for_voice_command()
+
+                if speech_command == 'next':
                     continue
                 else:
                     self._storage.dump()
@@ -90,3 +100,4 @@ class GeneiAppSelenium(IGeneiApp):
     def _click_next_page(self):
         e = self._driver.find_element_by_css_selector(self._config['click_button'])
         e.click()
+        print(f'next page was auto clicked')
