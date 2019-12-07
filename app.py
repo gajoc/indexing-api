@@ -71,12 +71,20 @@ class GeneiAppSelenium(IGeneiApp):
                 self._click_next_page()
                 speech_command = await_for_voice_command()
 
-                # copy last person until user says copy
-                while speech_command == 'copy':
-                    person = self._storage.get_previous_copied()
+                # click next scan until copy, skip or mark as unreadable is needed
+                while speech_command in ('copy', 'skip', 'unreadable'):
+                    person = {}
+                    if speech_command == 'copy':
+                        person = self._storage.get_previous_copied()
+                    elif speech_command == 'unreadable':
+                        person['warning'] = 'unreadable'
+                    elif speech_command == 'skip':
+                        person['warning'] = 'skipped'
+
                     person['scan_link'] = self._driver.current_url
                     self._save(person)
                     person = {}
+
                     self._click_next_page()
                     speech_command = await_for_voice_command()
 
