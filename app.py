@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from config import VoiceCommand
+from utils.autocomplete import AutocompleteFields
 from utils.mic import get_voice_command
 from utils.storage import Storage
 
@@ -24,6 +25,7 @@ class GeneiAppSelenium(IGeneiApp):
         self._user_input_cache = {}
         self._storage = Storage(config['common']['storage_dir'])
         self._to_command = config['voice_command_translator'][config['voice_language']]
+        self._autocomplete = AutocompleteFields(fields=self._config.get('autocomplete_fields', ()))
 
     def _init_browser_driver(self):
         chrome_options = Options()
@@ -106,8 +108,7 @@ class GeneiAppSelenium(IGeneiApp):
             user_input = self._prompt(field)
             if user_input:
                 user_input = user_input.capitalize()
-            person[field] = self._autocomplete_missing(
-                field, value=user_input, autocomplete=self._config.get('autocomplete_fields', ()))
+            person[field] = self._autocomplete.fill_missing(field, value=user_input)
 
     def _click_next_page(self):
         e = self._driver.find_element_by_css_selector(self._config['click_button'])
