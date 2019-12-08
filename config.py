@@ -44,9 +44,8 @@ config = {
 }
 
 user_config = {
-    'fields': ('nazwisko', 'imiona', 'miejsce_ur', 'data_ur', 'scan_link', 'save'),
-    # 'fields': ('surname', 'name', 'birth_place', 'birth_date', 'scan_link', 'save'),
-    'autocomplete_fields': ('birth_date',),
+    'fields': ('nazwisko', 'data_ur', 'scan_link', 'save'),
+    'autocomplete_fields': ('data_ur',),
     'click_button': "span[class='next pager-icon fs-civ-circle-chevron-right enabled']",
     'voice_language': Language.PL,
 }
