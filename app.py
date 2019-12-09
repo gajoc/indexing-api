@@ -22,7 +22,6 @@ class GeneiAppSelenium(IGeneiApp):
     def __init__(self, **config):
         self._config = config
         self._driver = self._init_browser_driver()
-        self._user_input_cache = {}
         self._storage = Storage(config['common']['storage_dir'])
         self._to_command = config['voice_command_translator'][config['voice_language']]
         self._autocomplete = AutocompleteFields(fields=self._config.get('autocomplete_fields', ()))
@@ -49,14 +48,6 @@ class GeneiAppSelenium(IGeneiApp):
     def _get_fields_generator(self):
         fields = self._config['fields']
         return cycle(fields)
-
-    def _autocomplete_missing(self, field, value, autocomplete):
-        if field not in autocomplete:
-            return value
-        if value:
-            self._user_input_cache[field] = value
-            return value
-        return self._user_input_cache.get(field, value)
 
     def run(self):
         self._welcome()
