@@ -18,14 +18,14 @@ class IGeneiApp(ABC):
 class GeneiAppSelenium(IGeneiApp):
 
     def __init__(self, **config):
-        self._config = config
         self._storage = Storage(config['common']['storage_dir'])
         self._to_command = config['voice_command_translator'][config['voice_language']]
-        self._autocomplete = AutocompleteFields(fields=self._config.get('autocomplete_fields', ()))
-        self._browser = Browser(user_browser=self._config['user_browser'],
-                                next_button=self._config['click_next_button'],
+        self._autocomplete = AutocompleteFields(fields=config.get('autocomplete_fields', ()))
+        self._browser = Browser(user_browser=config['user_browser'],
+                                next_button=config['click_next_button'],
                                 previous_button=None,
-                                config=self._config['selenium'])
+                                config=config['selenium'])
+        self._fields = cycle(config['fields'])
 
     def _save(self, data):
         print('zapisywanie...')
@@ -38,17 +38,12 @@ class GeneiAppSelenium(IGeneiApp):
         line = input(f'{text}: ')
         return None if line == '' else line
 
-    def _get_fields_generator(self):
-        fields = self._config['fields']
-        return cycle(fields)
-
     def run(self):
         self._welcome()
-        fields = self._get_fields_generator()
         person = {}
 
         while True:
-            field = next(fields)
+            field = next(self._fields)
 
             if field == 'save':
                 self._save(person)
