@@ -2,11 +2,9 @@ from abc import abstractmethod, ABC
 from itertools import cycle
 from pprint import pprint
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-
 from config import VoiceCommand
 from utils.autocomplete import AutocompleteFields
+from utils.browser import Browser
 from utils.mic import get_voice_command
 from utils.storage import Storage
 
@@ -21,18 +19,13 @@ class GeneiAppSelenium(IGeneiApp):
 
     def __init__(self, **config):
         self._config = config
-        self._driver = self._init_browser_driver()
         self._storage = Storage(config['common']['storage_dir'])
         self._to_command = config['voice_command_translator'][config['voice_language']]
         self._autocomplete = AutocompleteFields(fields=self._config.get('autocomplete_fields', ()))
-
-    def _init_browser_driver(self):
-        chrome_options = Options()
-        config = self._config['selenium']['chrome']
-        for key, value in config['experimentalOptions'].items():
-            chrome_options.add_experimental_option(key, value)
-        driver = webdriver.Chrome(config['driverPath'], chrome_options=chrome_options)
-        return driver
+        self._browser = Browser(user_browser=self._config['user_browser'],
+                                next_button=self._config['click_next_button'],
+                                previous_button=None,
+                                config=self._config['selenium'])
 
     def _save(self, data):
         print('zapisywanie...')
@@ -60,7 +53,7 @@ class GeneiAppSelenium(IGeneiApp):
             if field == 'save':
                 self._save(person)
                 person = {}
-                self._click_next_page()
+                self._browser.click_next()
                 speech = get_voice_command()
                 command = self._to_command.get(speech)
 
@@ -75,11 +68,12 @@ class GeneiAppSelenium(IGeneiApp):
                     elif command == VoiceCommand.NEXT:
                         person['info'] = speech
 
-                    person['scan_link'] = self._driver.current_url
+                    person['scan_link'] = self._browser.current_url()
+
                     self._save(person)
                     person = {}
 
-                    self._click_next_page()
+                    self._browser.click_next()
                     speech = get_voice_command()
                     command = self._to_command.get(speech)
 
@@ -93,18 +87,13 @@ class GeneiAppSelenium(IGeneiApp):
                     break
 
             if field == 'scan_link':
-                person[field] = self._driver.current_url
+                person[field] = self._browser.current_url()
                 continue
 
             user_input = self._prompt(field)
             if user_input:
                 user_input = user_input.capitalize()
             person[field] = self._autocomplete.fill_missing(field, value=user_input)
-
-    def _click_next_page(self):
-        e = self._driver.find_element_by_css_selector(self._config['click_button'])
-        e.click()
-        print(f'Kliknąłem automatycznie następną stronę')
 
     @staticmethod
     def _welcome():

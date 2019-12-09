@@ -46,6 +46,7 @@ config = {
 user_config = {
     'fields': ('nazwisko', 'data_ur', 'scan_link', 'save'),
     'autocomplete_fields': ('data_ur',),
-    'click_button': "span[class='next pager-icon fs-civ-circle-chevron-right enabled']",
+    'click_next_button': "span[class='next pager-icon fs-civ-circle-chevron-right enabled']",
+    'user_browser': 'chrome',
     'voice_language': Language.PL,
 }
