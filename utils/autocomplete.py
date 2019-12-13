@@ -1,11 +1,14 @@
+from typing import Sequence, Any
+
+
 class AutocompleteFields:
 
     _user_input_cache = {}
 
-    def __init__(self, fields):
+    def __init__(self, fields: Sequence):
         self._autocomplete = fields
 
-    def fill_missing(self, field, value):
+    def fill_missing(self, field: str, value: Any):
         if field not in self._autocomplete:
             return value
         if value:

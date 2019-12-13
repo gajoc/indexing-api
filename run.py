@@ -1,7 +1,7 @@
+import sys
+
 from app import GeneiAppSelenium
-from config import config, user_config
 
 
-config.update(user_config)
-g_app = GeneiAppSelenium(**config)
+g_app = GeneiAppSelenium(control_via=sys.argv[1])
 g_app.run()

@@ -1,7 +1,11 @@
+from typing import Sequence, Type, Union, Dict
+
 import speech_recognition as sr
 
+from utils.autocomplete import AutocompleteFields
 
-def await_for_voice_command():
+
+def await_for_voice_command() -> Union[str, None]:
     r = sr.Recognizer()
     r.energy_threshold = 500
     r.dynamic_energy_threshold = False
@@ -23,10 +27,19 @@ def await_for_voice_command():
         return
 
 
-def get_voice_command():
+def get_voice_command() -> str:
     command = await_for_voice_command()
     while not command:
         print('Powtórz proszę jeszcze raz!')
         command = await_for_voice_command()
-
     return command
+
+
+def collect_user_inputs(fields: Sequence, autocomplete: Type[AutocompleteFields] = None) -> Dict:
+    entity = {}
+    for field in fields:
+        user_input = input(f'{field}: ')
+        entity[field] = autocomplete.fill_missing(field, value=user_input) \
+            if autocomplete else \
+            user_input if user_input else None
+    return entity
