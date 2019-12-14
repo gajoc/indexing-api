@@ -51,12 +51,14 @@ Run Chrome browser in debug mode
 
 In project directory run application
 
-```python run.py```
+```python run.py [voice|keyboard]```
+
+Mandatory argument ```voice|keyboard``` sets application control method.
 
 Application will connect automatically with Chrome process.
 
 Login to your genealogy sources portal (fs support at the moment) and start 
-working wit it.
+working with it.
 
 `Genei` is a console app. To keep console window pinned on top of other windows 
 use `AutoHotkey`. You can get it from here
