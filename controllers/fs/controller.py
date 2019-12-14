@@ -1,4 +1,4 @@
-from controllers.fs_action import FamilySearchOnePageOneManAction
+from controllers.fs.action import FamilySearchOnePageOneManAction
 from controllers.kbrd_controller import KeyboardController
 from controllers.voice_controller import VoiceController
 

@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 
-from controllers.fs_controller import FamilySearchMilitaryRecordsVoiceCommand, \
+from controllers.fs.controller import FamilySearchMilitaryRecordsVoiceCommand, \
     FamilySearchMilitaryRecordsKeyboardCommand
 from utils.constants import UserAction
 
