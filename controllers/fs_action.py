@@ -2,7 +2,7 @@ from typing import Union
 
 from controllers.iaction import IAction
 from utils.constants import UserAction
-from utils.mic import collect_user_inputs, add_info
+from utils.misc import collect_user_inputs, add_info
 
 
 class FamilySearchOnePageOneManAction(IAction):
