@@ -6,8 +6,8 @@ class UserAction(IntEnum):
     DATA_INPUT = 1
     NEXT_SCAN = 2
     PREV_SCAN = 3
-    MEM_LINK = 4
-    DUMP_DATA = 5
+    COPY = 4
+    UNREADABLE = 5
 
 
 class VoiceCommand(Enum):
@@ -22,6 +22,8 @@ COMMAND_2_ACTION = {
     VoiceCommand.DATA: UserAction.DATA_INPUT,
     VoiceCommand.NEXT: UserAction.NEXT_SCAN,
     VoiceCommand.EXIT: UserAction.EXIT,
+    VoiceCommand.COPY: UserAction.COPY,
+    VoiceCommand.UNREADABLE: UserAction.UNREADABLE,
 }
 
 
@@ -43,10 +45,10 @@ SPEECH_2_COMMAND = {
 
 KEYBOARD_BUTTON_2_ACTION = {
     '1': UserAction.DATA_INPUT,
-    '2': None,
+    '2': UserAction.COPY,
     '3': UserAction.NEXT_SCAN,
-    '4': None,
-    '5': UserAction.EXIT,
+    '5': UserAction.UNREADABLE,
+    '6': UserAction.EXIT,
 }
 
 

@@ -10,7 +10,7 @@ def await_for_voice_command() -> Union[str, None]:
     r.energy_threshold = 500
     r.dynamic_energy_threshold = False
     with sr.Microphone() as source:
-        print('Powiedz co robimy? dane / kopia / następny / nieczytelny')
+        print('Powiedz co robimy? dane | kopia | następny | nieczytelny | koniec')
         r.adjust_for_ambient_noise(source, duration=0.5)
         audio = r.listen(source)
     try:
@@ -43,3 +43,7 @@ def collect_user_inputs(fields: Sequence, autocomplete: Type[AutocompleteFields]
             if autocomplete else \
             user_input if user_input else None
     return entity
+
+
+def add_info(entity: Dict, value) -> None:
+    entity['info'] = value

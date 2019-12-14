@@ -2,7 +2,7 @@ from typing import Union
 
 from controllers.common_controller import CommonController
 from utils.constants import UserAction, COMMAND_2_ACTION, SPEECH_2_COMMAND
-from utils.mic import get_voice_command, collect_user_inputs
+from utils.mic import get_voice_command, collect_user_inputs, add_info
 
 
 class VoiceController(CommonController):
@@ -20,10 +20,24 @@ class VoiceController(CommonController):
         if action == UserAction.DATA_INPUT:
             entity = collect_user_inputs(self._input_fields, autocomplete=self._autocomplete)
             self._add_browser_link(entity)
+            add_info(entity, value=UserAction.DATA_INPUT.name)
             self._storage.add(entity)
             print(entity)
-
+            return UserAction.NEXT_SCAN
         elif action == UserAction.NEXT_SCAN:
             self._browser.click_next()
+        elif action == UserAction.COPY:
+            entity = self._storage.get_previous_copied()
+            self._add_browser_link(entity)
+            add_info(entity, value=UserAction.COPY.name)
+            self._storage.add(entity)
+            return UserAction.NEXT_SCAN
+        elif action == UserAction.UNREADABLE:
+            entity = {}
+            self._add_browser_link(entity)
+            add_info(entity, value=UserAction.UNREADABLE.name)
+            self._storage.add(entity)
+            print(entity)
+            return UserAction.NEXT_SCAN
         else:
-            print(f'Nierozpoznano akcji {action}')
+            print(f'Nieznana akcja, proszę wybrać jedną z dostępnych akcji.')
