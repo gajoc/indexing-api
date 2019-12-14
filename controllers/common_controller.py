@@ -20,6 +20,11 @@ class CommonController(IController):
         self._input_fields = INPUT_FIELDS
         self._storage = Storage(STORAGE_DIR)
 
+    @property
+    @abstractmethod
+    def user_prompt_info(self):
+        pass
+
     @abstractmethod
     def wait_for_user_action(self) -> UserAction:
         pass
