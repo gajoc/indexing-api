@@ -24,10 +24,6 @@ class CommonController(IController):
     def wait_for_user_action(self) -> UserAction:
         pass
 
-    @abstractmethod
-    def execute(self, action: UserAction):
-        pass
-
     def before_exit(self) -> None:
         self._storage.dump()
 

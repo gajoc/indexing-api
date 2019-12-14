@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 
-from controllers.kbrd_controller import KeyboardController
-from controllers.voice_controller import VoiceController
+from controllers.fs_controller import FamilySearchMilitaryRecordsVoiceCommand, \
+    FamilySearchMilitaryRecordsKeyboardCommand
 from utils.constants import UserAction
 
 
@@ -15,8 +15,8 @@ class GeneiAppSelenium(IGeneiApp):
 
     def __init__(self, control_via):
         controller_types = {
-            'voice': VoiceController,
-            'keyboard': KeyboardController,
+            'voice': FamilySearchMilitaryRecordsVoiceCommand,
+            'keyboard': FamilySearchMilitaryRecordsKeyboardCommand,
 
         }
         self.controller = controller_types.get(control_via)()

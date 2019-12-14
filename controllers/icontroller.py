@@ -12,7 +12,3 @@ class IController(ABC):
     @abstractmethod
     def before_exit(self):
         pass
-
-    @abstractmethod
-    def execute(self, action: UserAction):
-        pass
