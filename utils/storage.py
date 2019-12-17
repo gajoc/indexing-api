@@ -4,6 +4,8 @@ import uuid
 from datetime import datetime
 from typing import Dict
 
+from utils.constants import DATETIME_FORMAT
+
 
 class Storage:
 
@@ -12,7 +14,7 @@ class Storage:
         self._store = []
 
     def add(self, entity: Dict) -> None:
-        entity['created_utc'] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+        entity['created_utc'] = datetime.utcnow().strftime(DATETIME_FORMAT)
         self._store.append(entity)
 
     def get_previous_copied(self) -> Dict:

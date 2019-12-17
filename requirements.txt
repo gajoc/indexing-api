@@ -1,5 +1,7 @@
 entrypoints==0.3
 flake8==3.7.9
+marshmallow==3.3.0
+marshmallow-enum==1.5.1
 mccabe==0.6.1
 PyAudio==0.2.11
 pycodestyle==2.5.0
