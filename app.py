@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 
+from controllers.failure_monitor import ControllerFailureMonitor
 from controllers.fs.controller import FamilySearchMilitaryRecordsVoiceCommand, \
     FamilySearchMilitaryRecordsKeyboardCommand
 from utils.constants import UserAction
@@ -22,11 +23,12 @@ class GeneiAppSelenium(IGeneiApp):
         self.controller = controller_types.get(control_via)()
 
     def run(self) -> None:
-        action = None
-        while True:
-            if not action:
-                action = self.controller.wait_for_user_action()
-            if action == UserAction.EXIT:
-                self.controller.before_exit()
-                break
-            action = self.controller.execute(action)
+        with ControllerFailureMonitor(self.controller):
+            action = None
+            while True:
+                if not action:
+                    action = self.controller.wait_for_user_action()
+                if action == UserAction.EXIT:
+                    self.controller.before_exit()
+                    break
+                action = self.controller.execute(action)
