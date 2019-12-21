@@ -52,8 +52,8 @@ KEYBOARD_BUTTON_2_ACTION = {
 }
 
 
-INPUT_FIELDS = ('nazwisko', 'data_ur',)
-AUTOCOMPLETE_FIELDS = ('data_ur',)
+INPUT_FIELDS = ('surname', 'born_year',)
+AUTOCOMPLETE_FIELDS = ('born_year',)
 NEXT_BUTTON_FAMILY_SEARCH = "span[class='next pager-icon fs-civ-circle-chevron-right enabled']"
 VOICE_LANGUAGE = Language.PL
 

@@ -1,7 +1,10 @@
+from typing import Dict, Union, Sequence
+
 from marshmallow import Schema, fields, post_dump
 from marshmallow_enum import EnumField
 
 from utils.constants import UserAction, DATETIME_FORMAT
+from utils.misc import asterisk_string
 
 
 class IEntitySchema(Schema):
@@ -14,13 +17,19 @@ class IEntitySchema(Schema):
 
 
 class MilitaryEntityFamilySearchSchema(IEntitySchema):
-    surname = fields.Str(required=True, attribute='nazwisko', data_key='nazwisko')
-    born_year = fields.Str(required=True, attribute='data_ur', data_key='data_ur')
+    surname = fields.Str(data_key='nazwisko')
+    born_year = fields.Str(data_key='data_ur')
 
 
-class MilitaryShortEntityFamilySearchSchema(MilitaryEntityFamilySearchSchema):
+class HumanReadableSchema(MilitaryEntityFamilySearchSchema):
+
+    @staticmethod
+    def human_readable_entity(entity: Dict, values_only: bool = True, link_parts: int = 5) -> Union[Dict, Sequence]:
+        short_entity = entity.copy()
+        short_entity.pop('created_utc')
+        short_entity['scan_link'] = asterisk_string(short_entity['scan_link'], parts=link_parts)
+        return tuple(short_entity.values()) if values_only else short_entity
 
     @post_dump
-    def short_entity(self, data, **kwargs):
-        raise NotImplementedError('Implementation from misc.short_print needed here. Use it in project.')
-        pass
+    def make_human_readable(self, data: Dict, **kwargs) -> Union[Dict, Sequence]:
+        return self.human_readable_entity(entity=data)

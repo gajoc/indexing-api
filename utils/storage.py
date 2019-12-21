@@ -1,10 +1,9 @@
 import json
 import os
 import uuid
-from datetime import datetime
 from typing import Dict
 
-from utils.constants import DATETIME_FORMAT
+from model.ientity import MilitaryEntityFamilySearchSchema
 
 
 class Storage:
@@ -14,7 +13,6 @@ class Storage:
         self._store = []
 
     def add(self, entity: Dict) -> None:
-        entity['created_utc'] = datetime.utcnow().strftime(DATETIME_FORMAT)
         self._store.append(entity)
 
     def get_previous_copied(self) -> Dict:
@@ -22,7 +20,9 @@ class Storage:
 
     def dump(self) -> None:
         with open(f'{self._storage_dir}{os.sep}data-{uuid.uuid1()}.json', 'w', encoding='utf-8') as f:
-            json.dump(self._store, f, ensure_ascii=False, indent=4)
+            schema = MilitaryEntityFamilySearchSchema()
+            serialized_store = schema.dump(self._store, many=True)
+            json.dump(serialized_store, f, ensure_ascii=False, indent=4)
         print(f'Dane zapisano do pliku, zrzucono {len(self)} elementów.')
         self._store = []
 

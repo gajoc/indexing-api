@@ -4,7 +4,7 @@ import sys
 import uuid
 
 if __name__ == '__main__':
-    if len(sys.argv[1]) < 2:
+    if len(sys.argv) < 2:
         raise ValueError('add parameter to folder with json files to merge')
     directory = sys.argv[1]
     print(f'merging json files in directory {directory}...')
