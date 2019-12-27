@@ -2,17 +2,30 @@ import json
 import os
 import uuid
 from contextlib import suppress
+from functools import wraps
 from typing import Dict
 
 from model.ientity import MilitaryEntityFamilySearchSchema
 
 
+def _auto_dump(fn):
+    @wraps(fn)
+    def wrapper(self, *args, **kwargs):
+        entities_count = len(self)
+        if self.storage_entities_limit and entities_count >= self.storage_entities_limit:
+            self.dump()
+        return fn(self, *args, **kwargs)
+    return wrapper
+
+
 class Storage:
 
-    def __init__(self, storage_dir: str):
+    def __init__(self, storage_dir: str, storage_entities_limit: int = 0):
+        self.storage_entities_limit = storage_entities_limit
         self._storage_dir = storage_dir
         self._store = []
 
+    @_auto_dump
     def add(self, entity: Dict) -> None:
         self._store.append(entity)
 

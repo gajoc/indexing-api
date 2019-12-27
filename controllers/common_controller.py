@@ -5,7 +5,7 @@ from controllers.icontroller import IController
 from utils.autocomplete import AutocompleteFields
 from utils.browser import Browser
 from utils.constants import INPUT_FIELDS, STORAGE_DIR, SELENIUM_CONFIG, NEXT_BUTTON_FAMILY_SEARCH, USER_BROWSER, \
-    AUTOCOMPLETE_FIELDS, UserAction, PREVIOUS_BUTTON_FAMILY_SEARCH
+    AUTOCOMPLETE_FIELDS, UserAction, PREVIOUS_BUTTON_FAMILY_SEARCH, STORAGE_ENTITIES_LIMIT
 from utils.storage import Storage
 
 
@@ -18,7 +18,7 @@ class CommonController(IController):
                                 previous_button=PREVIOUS_BUTTON_FAMILY_SEARCH,
                                 config=SELENIUM_CONFIG)
         self._input_fields = INPUT_FIELDS
-        self._storage = Storage(STORAGE_DIR)
+        self._storage = Storage(STORAGE_DIR, STORAGE_ENTITIES_LIMIT)
 
     @property
     @abstractmethod
