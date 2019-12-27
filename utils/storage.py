@@ -1,6 +1,7 @@
 import json
 import os
 import uuid
+from contextlib import suppress
 from typing import Dict
 
 from model.ientity import MilitaryEntityFamilySearchSchema
@@ -16,7 +17,16 @@ class Storage:
         self._store.append(entity)
 
     def get_previous_copied(self) -> Dict:
-        return self._store[-1].copy()
+        previous = {}
+        with suppress(IndexError):
+            previous = self._store[-1].copy()
+        return previous
+
+    def pop_previous(self) -> Dict:
+        previous = {}
+        with suppress(IndexError):
+            previous = self._store.pop()
+        return previous
 
     def dump(self) -> None:
         with open(f'{self._storage_dir}{os.sep}data-{uuid.uuid1()}.json', 'w', encoding='utf-8') as f:

@@ -16,12 +16,14 @@ class VoiceCommand(Enum):
     NEXT = 2
     UNREADABLE = 3
     EXIT = 4
+    PREV = 5
 
 
 COMMAND_2_ACTION = {
     VoiceCommand.DATA: UserAction.DATA_INPUT,
     VoiceCommand.NEXT: UserAction.NEXT_SCAN,
     VoiceCommand.EXIT: UserAction.EXIT,
+    VoiceCommand.PREV: UserAction.PREV_SCAN,
     VoiceCommand.COPY: UserAction.COPY,
     VoiceCommand.UNREADABLE: UserAction.UNREADABLE,
 }
@@ -37,6 +39,8 @@ SPEECH_2_COMMAND = {
     'kopia': VoiceCommand.COPY,
     'następny': VoiceCommand.NEXT,
     'następne': VoiceCommand.NEXT,
+    'wróć': VoiceCommand.PREV,
+    'poprzedni': VoiceCommand.PREV,
     'nieczytelny': VoiceCommand.UNREADABLE,
     'nieczytelne': VoiceCommand.UNREADABLE,
     'koniec': VoiceCommand.EXIT,
@@ -47,6 +51,7 @@ KEYBOARD_BUTTON_2_ACTION = {
     '1': UserAction.DATA_INPUT,
     '2': UserAction.COPY,
     '3': UserAction.NEXT_SCAN,
+    '4': UserAction.PREV_SCAN,
     '5': UserAction.UNREADABLE,
     '6': UserAction.EXIT,
 }
@@ -55,6 +60,7 @@ KEYBOARD_BUTTON_2_ACTION = {
 INPUT_FIELDS = ('surname', 'born_year',)
 AUTOCOMPLETE_FIELDS = ('born_year',)
 NEXT_BUTTON_FAMILY_SEARCH = "span[class='next pager-icon fs-civ-circle-chevron-right enabled']"
+PREVIOUS_BUTTON_FAMILY_SEARCH = "span[class='previous pager-icon fs-civ-circle-chevron-left enabled']"
 VOICE_LANGUAGE = Language.PL
 
 USER_BROWSER = 'chrome'

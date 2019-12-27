@@ -32,6 +32,11 @@ class FamilySearchOnePageOneManAction(IAction):
             entity = {}
             self._prepare_and_add_to_storage(entity, UserAction.UNREADABLE)
             return UserAction.NEXT_SCAN
+        elif action == UserAction.PREV_SCAN:
+            entity = self._storage.pop_previous()
+            human_view = self.human_readable_schema.dump(entity) if entity else {}
+            print(f'popped entity {human_view}')
+            self._browser.click_previous()
         else:
             print(f'Nieznana akcja, proszę wybrać jedną z dostępnych akcji.')
 

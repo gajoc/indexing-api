@@ -14,7 +14,7 @@ class VoiceController(CommonController):
 
     @property
     def user_prompt_info(self):
-        return 'Powiedz co robimy? dane | kopia | następny | nieczytelny | koniec'
+        return 'Powiedz co robimy? dane | kopia | następny | poprzedni | nieczytelny | koniec'
 
     def wait_for_user_action(self) -> UserAction:
         speech_recognized = self.get_voice_command()
