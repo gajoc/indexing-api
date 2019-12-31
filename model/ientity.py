@@ -1,3 +1,4 @@
+from collections import Mapping
 from typing import Dict, Union, Sequence
 
 from marshmallow import Schema, fields, post_dump
@@ -19,6 +20,12 @@ class IEntitySchema(Schema):
 class MilitaryEntityFamilySearchSchema(IEntitySchema):
     surname = fields.Str(data_key='nazwisko')
     born_year = fields.Str(data_key='data_ur')
+
+    @post_dump
+    def make_surname_proper(self, data: Union[Dict, Sequence], **kwargs) -> Dict:
+        if isinstance(data, Mapping):
+            data['nazwisko'] = data['nazwisko'].title()
+        return data
 
 
 class HumanReadableSchema(MilitaryEntityFamilySearchSchema):
