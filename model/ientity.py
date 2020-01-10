@@ -23,7 +23,7 @@ class MilitaryEntityFamilySearchSchema(IEntitySchema):
 
     @post_dump
     def make_surname_proper(self, data: Union[Dict, Sequence], **kwargs) -> Dict:
-        if isinstance(data, Mapping):
+        if isinstance(data, Mapping) and 'nazwisko' in data:
             data['nazwisko'] = data['nazwisko'].title()
         return data
 
