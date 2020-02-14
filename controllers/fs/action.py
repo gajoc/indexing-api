@@ -29,20 +29,27 @@ class FamilySearchOnePageOneManAction(IAction):
             'info': action,
             'created_utc': datetime.utcnow()
         }
-        handler = self.dispatch_action_handler(action)()
-
+        args = ()
+        kwargs = {}
         if action == UserAction.DATA_INPUT:
-            handler.handle(self._input_fields, self._autocomplete, self._storage, **additional_data)
+            args = (self._input_fields, self._autocomplete, self._storage,)
+            kwargs = additional_data
         elif action == UserAction.NEXT_SCAN:
-            handler.handle(self._browser, BrowserAction.NEXT)
+            args = (self._browser, BrowserAction.NEXT,)
         elif action == UserAction.COPY:
-            handler.handle(self._storage, **additional_data)
+            args = (self._storage,)
+            kwargs = additional_data
         elif action == UserAction.UNREADABLE:
-            handler.handle(self._storage, **additional_data)
+            args = (self._storage,)
+            kwargs = additional_data
         elif action == UserAction.PREV_SCAN:
-            handler.handle(self._storage, self._browser, BrowserAction.PREVIOUS)
+            args = (self._storage, self._browser, BrowserAction.PREVIOUS)
         else:
             print(f'Nieznana akcja, proszę wybrać jedną z dostępnych akcji.')
+
+        handler = self.dispatch_action_handler(action)
+        if handler:
+            handler().handle(*args, **kwargs)
         return self.next_action(action)
 
     def next_action(self, action: UserAction) -> Union[UserAction, None]:
