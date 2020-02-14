@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 
 from domain.failure_monitor import ControllerFailureMonitor
-from controllers.fs.controller import FamilySearchMilitaryRecordsVoiceCommand, \
+from domain.scenario.fs_military_records import FamilySearchMilitaryRecordsVoiceCommand, \
     FamilySearchMilitaryRecordsKeyboardCommand
 from utils.constants import UserAction
 
