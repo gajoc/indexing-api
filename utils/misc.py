@@ -1,5 +1,6 @@
 import math
-from typing import Sequence, Type, Dict, Any
+from datetime import datetime
+from typing import Sequence, Type, Dict
 
 from utils.autocomplete import AutocompleteFields
 
@@ -17,3 +18,11 @@ def collect_user_inputs(fields: Sequence, autocomplete: Type[AutocompleteFields]
 def asterisk_string(value: str, parts: int) -> str:
     x = math.ceil(len(value)/parts)
     return f'{value[:x]}***{value[-x:]}'
+
+
+def entity_base_data(**kwargs) -> Dict:
+    entity = {
+        'created_utc': datetime.utcnow()
+    }
+    entity.update(**kwargs)
+    return entity

@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from typing import Dict
 
 from controllers.icontroller import IController
 from utils.autocomplete import AutocompleteFields
@@ -31,6 +30,3 @@ class CommonController(IController):
 
     def before_exit(self) -> None:
         self._storage.dump()
-
-    def _add_browser_link(self, entity: Dict, key: str) -> None:
-        entity[key] = self._browser.current_url()

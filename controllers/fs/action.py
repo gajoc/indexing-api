@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Union
 
 from controllers.iaction import IAction
@@ -8,6 +7,7 @@ from domain.action_handler.empty_input import EmptyEntityHandler
 from domain.action_handler.pop_input import PopPreviousEntity
 from domain.action_handler.user_input import CollectUserInputHandler
 from utils.constants import UserAction, BrowserAction
+from utils.misc import entity_base_data
 
 
 class FamilySearchOnePageOneManAction(IAction):
@@ -24,24 +24,23 @@ class FamilySearchOnePageOneManAction(IAction):
         super().__init__()
 
     def execute(self, action: UserAction) -> Union[UserAction, None]:
-        additional_data = {
+        base_data = entity_base_data(**{
             'scan_link': self._browser.current_url(),
             'info': action,
-            'created_utc': datetime.utcnow()
-        }
+        })
         args = ()
         kwargs = {}
         if action == UserAction.DATA_INPUT:
             args = (self._input_fields, self._autocomplete, self._storage,)
-            kwargs = additional_data
+            kwargs = base_data
         elif action == UserAction.NEXT_SCAN:
             args = (self._browser, BrowserAction.NEXT,)
         elif action == UserAction.COPY:
             args = (self._storage,)
-            kwargs = additional_data
+            kwargs = base_data
         elif action == UserAction.UNREADABLE:
             args = (self._storage,)
-            kwargs = additional_data
+            kwargs = base_data
         elif action == UserAction.PREV_SCAN:
             args = (self._storage, self._browser, BrowserAction.PREVIOUS)
         else:
