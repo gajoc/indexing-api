@@ -12,6 +12,14 @@ from utils.constants import UserAction, BrowserAction
 
 class FamilySearchOnePageOneManAction(IAction):
 
+    action_handlers = {
+        UserAction.DATA_INPUT: CollectUserInputHandler,
+        UserAction.NEXT_SCAN: BrowserHandler,
+        UserAction.COPY: CopyLastUserInputHandler,
+        UserAction.UNREADABLE: EmptyEntityHandler,
+        UserAction.PREV_SCAN: PopPreviousEntity
+    }
+
     def __init__(self):
         super().__init__()
 
@@ -21,16 +29,18 @@ class FamilySearchOnePageOneManAction(IAction):
             'info': action,
             'created_utc': datetime.utcnow()
         }
+        handler = self.dispatch_action_handler(action)()
+
         if action == UserAction.DATA_INPUT:
-            CollectUserInputHandler().handle(self._input_fields, self._autocomplete, self._storage, **additional_data)
+            handler.handle(self._input_fields, self._autocomplete, self._storage, **additional_data)
         elif action == UserAction.NEXT_SCAN:
-            BrowserHandler().handle(self._browser, BrowserAction.NEXT)
+            handler.handle(self._browser, BrowserAction.NEXT)
         elif action == UserAction.COPY:
-            CopyLastUserInputHandler().handle(self._storage, **additional_data)
+            handler.handle(self._storage, **additional_data)
         elif action == UserAction.UNREADABLE:
-            EmptyEntityHandler().handle(self._storage, **additional_data)
+            handler.handle(self._storage, **additional_data)
         elif action == UserAction.PREV_SCAN:
-            PopPreviousEntity().handle(self._storage, self._browser, BrowserAction.PREVIOUS)
+            handler.handle(self._storage, self._browser, BrowserAction.PREVIOUS)
         else:
             print(f'Nieznana akcja, proszę wybrać jedną z dostępnych akcji.')
         return self.next_action(action)
