@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from model.ientity import HumanReadableSchema
+from model.human_readable_entity import HumanReadableSchema
 
 
 class IActionHandler(ABC):

@@ -5,7 +5,7 @@ from contextlib import suppress
 from functools import wraps
 from typing import Dict
 
-from model.ientity import MilitaryEntityFamilySearchSchema
+from model.fs_military_entity import MilitaryEntityFamilySearchSchema
 
 
 def _auto_dump(fn):
