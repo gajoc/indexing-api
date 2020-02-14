@@ -1,6 +1,6 @@
 from typing import Union
 
-from controllers.iaction import IAction
+from domain.action.iaction import IAction
 from domain.action_handler.browser import BrowserHandler
 from domain.action_handler.copy_input import CopyLastUserInputHandler
 from domain.action_handler.empty_input import EmptyEntityHandler
@@ -10,7 +10,7 @@ from utils.constants import UserAction, BrowserAction
 from utils.misc import entity_base_data
 
 
-class FamilySearchOnePageOneManAction(IAction):
+class OnePageOneManAction(IAction):
 
     action_handlers = {
         UserAction.DATA_INPUT: CollectUserInputHandler,
