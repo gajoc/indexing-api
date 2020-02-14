@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 
-from controllers.failure_monitor import ControllerFailureMonitor
+from domain.failure_monitor import ControllerFailureMonitor
 from controllers.fs.controller import FamilySearchMilitaryRecordsVoiceCommand, \
     FamilySearchMilitaryRecordsKeyboardCommand
 from utils.constants import UserAction

@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from controllers.icontroller import IController
+from domain.controller.icontroller import IController
 from utils.autocomplete import AutocompleteFields
 from utils.browser import Browser
 from utils.constants import INPUT_FIELDS, STORAGE_DIR, SELENIUM_CONFIG, NEXT_BUTTON_FAMILY_SEARCH, USER_BROWSER, \

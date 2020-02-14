@@ -1,4 +1,4 @@
-from controllers.common_controller import CommonController
+from domain.controller.common_controller import CommonController
 from utils.constants import UserAction, KEYBOARD_BUTTON_2_ACTION
 
 

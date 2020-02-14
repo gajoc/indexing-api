@@ -2,7 +2,7 @@ from typing import Union
 
 import speech_recognition as sr
 
-from controllers.common_controller import CommonController
+from domain.controller.common_controller import CommonController
 from utils.constants import UserAction, COMMAND_2_ACTION, SPEECH_2_COMMAND
 
 
