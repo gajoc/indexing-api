@@ -1,39 +1,36 @@
 from datetime import datetime
-from typing import Union, Dict
+from typing import Union
 
 from controllers.iaction import IAction
-from model.ientity import HumanReadableSchema
-from utils.constants import UserAction
-from utils.misc import collect_user_inputs
+from domain.action_handler.browser import BrowserHandler
+from domain.action_handler.copy_input import CopyLastUserInputHandler
+from domain.action_handler.empty_input import EmptyEntityHandler
+from domain.action_handler.pop_input import PopPreviousEntity
+from domain.action_handler.user_input import CollectUserInputHandler
+from utils.constants import UserAction, BrowserAction
 
 
 class FamilySearchOnePageOneManAction(IAction):
 
     def __init__(self):
         super().__init__()
-        self.human_readable_schema = HumanReadableSchema()
 
     def execute(self, action: UserAction) -> Union[UserAction, None]:
+        additional_data = {
+            'scan_link': self._browser.current_url(),
+            'info': action,
+            'created_utc': datetime.utcnow()
+        }
         if action == UserAction.DATA_INPUT:
-            entity = collect_user_inputs(self._input_fields, autocomplete=self._autocomplete)
-            self._prepare_and_add_to_storage(entity, UserAction.DATA_INPUT)
-            human_view = self.human_readable_schema.dump(entity)
-            print(human_view)
+            CollectUserInputHandler().handle(self._input_fields, self._autocomplete, self._storage, **additional_data)
         elif action == UserAction.NEXT_SCAN:
-            self._browser.click_next()
+            BrowserHandler().handle(self._browser, BrowserAction.NEXT)
         elif action == UserAction.COPY:
-            entity = self._storage.get_previous_copied()
-            self._prepare_and_add_to_storage(entity, UserAction.COPY)
-            human_view = self.human_readable_schema.dump(entity)
-            print(human_view)
+            CopyLastUserInputHandler().handle(self._storage, **additional_data)
         elif action == UserAction.UNREADABLE:
-            entity = {}
-            self._prepare_and_add_to_storage(entity, UserAction.UNREADABLE)
+            EmptyEntityHandler().handle(self._storage, **additional_data)
         elif action == UserAction.PREV_SCAN:
-            entity = self._storage.pop_previous()
-            human_view = self.human_readable_schema.dump(entity) if entity else {}
-            print(f'popped entity {human_view}')
-            self._browser.click_previous()
+            PopPreviousEntity().handle(self._storage, self._browser, BrowserAction.PREVIOUS)
         else:
             print(f'Nieznana akcja, proszę wybrać jedną z dostępnych akcji.')
         return self.next_action(action)
@@ -47,9 +44,3 @@ class FamilySearchOnePageOneManAction(IAction):
             UserAction.PREV_SCAN: None
         }
         return mapper.get(action)
-
-    def _prepare_and_add_to_storage(self, entity: Dict, action: UserAction) -> None:
-        self._add_browser_link(entity, key='scan_link')
-        entity['info'] = action
-        entity['created_utc'] = datetime.utcnow()
-        self._storage.add(entity)

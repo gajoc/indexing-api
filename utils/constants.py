@@ -75,3 +75,9 @@ SELENIUM_CONFIG = {
 STORAGE_DIR = 'data'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 STORAGE_ENTITIES_LIMIT = 100
+
+
+class BrowserAction(Enum):
+    NEXT = 'click_next'
+    PREVIOUS = 'click_previous'
+    GET_LINK = 'current_url'
