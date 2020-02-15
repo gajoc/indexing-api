@@ -5,7 +5,7 @@ from contextlib import suppress
 from functools import wraps
 from typing import Dict
 
-from model.fs_military_entity import MilitaryEntityFamilySearchSchema
+from marshmallow import Schema
 
 
 def _auto_dump(fn):
@@ -20,9 +20,10 @@ def _auto_dump(fn):
 
 class Storage:
 
-    def __init__(self, storage_dir: str, storage_entities_limit: int = 0):
+    def __init__(self, storage_dir: str, schema: Schema, storage_entities_limit: int = 0):
         self.storage_entities_limit = storage_entities_limit
         self._storage_dir = storage_dir
+        self._schema = schema
         self._store = []
 
     @_auto_dump
@@ -43,8 +44,7 @@ class Storage:
 
     def dump(self) -> None:
         with open(f'{self._storage_dir}{os.sep}data-{uuid.uuid1()}.json', 'w', encoding='utf-8') as f:
-            schema = MilitaryEntityFamilySearchSchema()
-            serialized_store = schema.dump(self._store, many=True)
+            serialized_store = self._schema.dump(self._store, many=True)
             json.dump(serialized_store, f, ensure_ascii=False, indent=4)
         print(f'Dane zapisano do pliku, zrzucono {len(self)} elementów.')
         self._store = []
