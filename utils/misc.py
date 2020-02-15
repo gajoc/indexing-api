@@ -20,8 +20,10 @@ def asterisk_string(value: str, parts: int) -> str:
     return f'{value[:x]}***{value[-x:]}'
 
 
-def entity_base_data(**kwargs) -> Dict:
+def entity_base_data(scan_link, info, **kwargs) -> Dict:
     entity = {
+        'scan_link': scan_link,
+        'info': info,
         'created_utc': datetime.utcnow()
     }
     entity.update(**kwargs)

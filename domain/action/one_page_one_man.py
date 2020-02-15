@@ -24,10 +24,7 @@ class OnePageOneManAction(IAction):
         super().__init__()
 
     def execute(self, action: UserAction) -> Union[UserAction, None]:
-        base_data = entity_base_data(**{
-            'scan_link': self._browser.current_url(),
-            'info': action,
-        })
+        base_data = entity_base_data(scan_link=self._browser.current_url(), info=action)
         args = ()
         kwargs = {}
         if action == UserAction.DATA_INPUT:
@@ -54,9 +51,7 @@ class OnePageOneManAction(IAction):
     def next_action(self, action: UserAction) -> Union[UserAction, None]:
         mapper = {
             UserAction.DATA_INPUT: UserAction.NEXT_SCAN,
-            UserAction.NEXT_SCAN: None,
             UserAction.COPY: UserAction.NEXT_SCAN,
             UserAction.UNREADABLE: UserAction.NEXT_SCAN,
-            UserAction.PREV_SCAN: None
         }
         return mapper.get(action)
