@@ -1,5 +1,7 @@
 from contextlib import ContextDecorator
 
+from utils.logger import GeneiLogger
+
 
 class ControllerFailureMonitor(ContextDecorator):
 
@@ -13,4 +15,5 @@ class ControllerFailureMonitor(ContextDecorator):
         exc_name, _, _ = exc
         if exc_name:
             self.controller.before_exit()
+            GeneiLogger.get_logger(__name__).exception(exc)
         return False

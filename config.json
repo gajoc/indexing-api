@@ -7,5 +7,6 @@
       "experimentalOptions":{
          "debuggerAddress":"127.0.0.1:9222"
       }
-   }
+   },
+   "log_filename": "genei.log"
 }

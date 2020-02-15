@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Sequence, Type, Dict
 
 from utils.autocomplete import AutocompleteFields
+from utils.constants import UserAction
 
 
 def collect_user_inputs(fields: Sequence, autocomplete: Type[AutocompleteFields] = None) -> Dict:
@@ -20,7 +21,7 @@ def asterisk_string(value: str, parts: int) -> str:
     return f'{value[:x]}***{value[-x:]}'
 
 
-def entity_base_data(scan_link, info, **kwargs) -> Dict:
+def entity_base_data(scan_link: str, info: UserAction, **kwargs) -> Dict:
     entity = {
         'scan_link': scan_link,
         'info': info,
