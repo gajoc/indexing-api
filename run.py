@@ -1,7 +1,17 @@
-import sys
+from create import create_app
+from utils.constants import GenealogyService
 
-from app import GeneiAppSelenium
+config = {
+    "storage_dir": "data",
+    "storage_entities_limit": 100,
+    "browser": {
+        "name": "chrome",
+        "driverPath": "bin/chromedriver",
+        "experimentalOptions": {
+            "debuggerAddress": "127.0.0.1:9222",
+        }
+    }
+}
 
-
-g_app = GeneiAppSelenium(control_via=sys.argv[1])
-g_app.run()
+app = create_app(service=GenealogyService.FAMILY_SEARCH, config=config)
+app.run()

@@ -1,8 +1,6 @@
 from abc import abstractmethod, ABC
 
 from domain.failure_monitor import ControllerFailureMonitor
-from domain.scenario.fs_military_records import FamilySearchMilitaryRecordsVoiceCommand, \
-    FamilySearchMilitaryRecordsKeyboardCommand
 from utils.constants import UserAction
 
 
@@ -14,13 +12,8 @@ class IGeneiApp(ABC):
 
 class GeneiAppSelenium(IGeneiApp):
 
-    def __init__(self, control_via):
-        controller_types = {
-            'voice': FamilySearchMilitaryRecordsVoiceCommand,
-            'keyboard': FamilySearchMilitaryRecordsKeyboardCommand,
-
-        }
-        self.controller = controller_types.get(control_via)()
+    def __init__(self, controller):
+        self.controller = controller
 
     def run(self) -> None:
         with ControllerFailureMonitor(self.controller):
