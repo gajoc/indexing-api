@@ -20,6 +20,12 @@ class OnePageOneManAction(IAction):
         UserAction.PREV_SCAN: PopPreviousEntity
     }
 
+    next_actions = {
+        UserAction.DATA_INPUT: UserAction.NEXT_SCAN,
+        UserAction.COPY: UserAction.NEXT_SCAN,
+        UserAction.UNREADABLE: UserAction.NEXT_SCAN,
+        }
+
     def __init__(self):
         super().__init__()
 
@@ -47,11 +53,3 @@ class OnePageOneManAction(IAction):
         if handler:
             handler().handle(*args, **kwargs)
         return self.next_action(action)
-
-    def next_action(self, action: UserAction) -> Union[UserAction, None]:
-        mapper = {
-            UserAction.DATA_INPUT: UserAction.NEXT_SCAN,
-            UserAction.COPY: UserAction.NEXT_SCAN,
-            UserAction.UNREADABLE: UserAction.NEXT_SCAN,
-        }
-        return mapper.get(action)
