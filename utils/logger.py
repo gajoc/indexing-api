@@ -1,4 +1,5 @@
 import logging
+from functools import wraps
 
 
 class GeneiLogger:
@@ -16,3 +17,19 @@ class GeneiLogger:
         logger = logging.getLogger(name)
         logger.addHandler(cls._file_handler)
         return logger
+
+
+def log_exception(logger_name):
+    """GeneiLogger needs to be set before use"""
+    def inner_decorator(func):
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                logger = GeneiLogger.get_logger(logger_name)
+                logger.exception(e)
+                raise
+        return wrapper
+    return inner_decorator

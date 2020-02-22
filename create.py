@@ -6,10 +6,11 @@ from model import ModelSchemas
 from utils.browser import create_browser
 from utils.constants import GenealogyService, BrowserButtons, InteractionMethod, GenealogyDocumentType, \
     DEFAULT_STORAGE_DIR, DEFAULT_STORAGE_ENTITIES_LIMIT
-from utils.logger import GeneiLogger
+from utils.logger import GeneiLogger, log_exception
 from utils.storage import Storage
 
 
+@log_exception(__name__)
 def create_app(service: GenealogyService, config: Dict):
     GeneiLogger.set_logger(config["log_filename"])
     schema_cls = ModelSchemas.get(service, GenealogyDocumentType.MILITARY_RECORD)
