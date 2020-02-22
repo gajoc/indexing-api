@@ -1,11 +1,10 @@
 from typing import Dict
 
 from app import GeneiAppSelenium
-from domain.controller.scenario.fs_military_records import FamilySearchMilitaryRecordsVoiceCommand, \
-    FamilySearchMilitaryRecordsKeyboardCommand
+from domain.controller.scenario import ScenarioControllers
 from model.fs_military_entity import MilitaryEntityFamilySearchSchema
 from utils.browser import create_browser
-from utils.constants import GenealogyService, BrowserButtons
+from utils.constants import GenealogyService, BrowserButtons, InteractionMethod, GenealogyDocumentType
 from utils.logger import GeneiLogger
 from utils.storage import Storage
 
@@ -19,10 +18,6 @@ def create_app(service: GenealogyService, config: Dict):
     browser = create_browser(next_button=buttons.NEXT.value,
                              prev_button=buttons.PREV.value,
                              config=config["browser"])
-    controller_types = {
-        'voice': FamilySearchMilitaryRecordsVoiceCommand,
-        'keyboard': FamilySearchMilitaryRecordsKeyboardCommand,
-
-    }
-    controller = controller_types.get("keyboard")(browser, storage)
+    controller_cls = ScenarioControllers.get(InteractionMethod.KEYBOARD, GenealogyDocumentType.MILITARY_RECORD)
+    controller = controller_cls(browser, storage)
     return GeneiAppSelenium(controller)

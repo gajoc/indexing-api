@@ -10,6 +10,15 @@ class UserAction(IntEnum):
     UNREADABLE = 5
 
 
+class InteractionMethod(Enum):
+    VOICE = 'voice'
+    KEYBOARD = 'keyboard'
+
+
+class GenealogyDocumentType(Enum):
+    MILITARY_RECORD = 'military_record'
+
+
 SPEECH_2_ACTION = {
     'dane': UserAction.DATA_INPUT,
     'kopia': UserAction.COPY,
