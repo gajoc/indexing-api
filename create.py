@@ -4,16 +4,17 @@ from app import GeneiAppSelenium
 from domain.controller.scenario import ScenarioControllers
 from model.fs_military_entity import MilitaryEntityFamilySearchSchema
 from utils.browser import create_browser
-from utils.constants import GenealogyService, BrowserButtons, InteractionMethod, GenealogyDocumentType
+from utils.constants import GenealogyService, BrowserButtons, InteractionMethod, GenealogyDocumentType, \
+    DEFAULT_STORAGE_DIR, DEFAULT_STORAGE_ENTITIES_LIMIT
 from utils.logger import GeneiLogger
 from utils.storage import Storage
 
 
 def create_app(service: GenealogyService, config: Dict):
     GeneiLogger.set_logger(config["log_filename"])
-    storage = Storage(storage_dir=config.get("storage_dir", "data"),
+    storage = Storage(storage_dir=config.get("storage_dir", DEFAULT_STORAGE_DIR),
                       schema=MilitaryEntityFamilySearchSchema(),
-                      storage_entities_limit=config.get("storage_entities_limit", 0))
+                      storage_entities_limit=config.get("storage_entities_limit", DEFAULT_STORAGE_ENTITIES_LIMIT))
     buttons = BrowserButtons.get(service)
     browser = create_browser(next_button=buttons.NEXT.value,
                              prev_button=buttons.PREV.value,

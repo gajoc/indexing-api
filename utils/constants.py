@@ -1,6 +1,12 @@
 from enum import IntEnum, Enum
 
 
+DEFAULT_STORAGE_DIR = "data"
+DEFAULT_STORAGE_ENTITIES_LIMIT = 0
+DEFAULT_ENCODING = "utf-8"
+DEFAULT_CONFIG_FILE = "config.json"
+
+
 class UserAction(IntEnum):
     EXIT = 0
     DATA_INPUT = 1

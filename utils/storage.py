@@ -7,6 +7,8 @@ from typing import Dict
 
 from marshmallow import Schema
 
+from utils.constants import DEFAULT_ENCODING
+
 
 def _auto_dump(fn):
     @wraps(fn)
@@ -43,7 +45,7 @@ class Storage:
         return previous
 
     def dump(self) -> None:
-        with open(f'{self._storage_dir}{os.sep}data-{uuid.uuid1()}.json', 'w', encoding='utf-8') as f:
+        with open(f'{self._storage_dir}{os.sep}data-{uuid.uuid1()}.json', 'w', encoding=DEFAULT_ENCODING) as f:
             serialized_store = self._schema.dump(self._store, many=True)
             json.dump(serialized_store, f, ensure_ascii=False, indent=4)
         print(f'Dane zapisano do pliku, zrzucono {len(self)} elementów.')
