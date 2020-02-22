@@ -1,7 +1,7 @@
 from typing import Dict
 
 from app import GeneiAppSelenium
-from domain.scenario.fs_military_records import FamilySearchMilitaryRecordsVoiceCommand, \
+from domain.controller.scenario.fs_military_records import FamilySearchMilitaryRecordsVoiceCommand, \
     FamilySearchMilitaryRecordsKeyboardCommand
 from model.fs_military_entity import MilitaryEntityFamilySearchSchema
 from utils.browser import create_browser
