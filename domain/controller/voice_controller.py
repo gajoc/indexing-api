@@ -3,14 +3,14 @@ from typing import Union
 import speech_recognition as sr
 
 from domain.controller.common_controller import CommonController
-from utils.constants import UserAction, COMMAND_2_ACTION, SPEECH_2_COMMAND
+from utils.constants import UserAction, SPEECH_2_ACTION
 
 
 class VoiceController(CommonController):
 
     def __init__(self):
         super().__init__()
-        self._to_command = SPEECH_2_COMMAND
+        self._to_action = SPEECH_2_ACTION
 
     @property
     def user_prompt_info(self):
@@ -18,8 +18,7 @@ class VoiceController(CommonController):
 
     def wait_for_user_action(self) -> UserAction:
         speech_recognized = self.get_voice_command()
-        command = self._to_command.get(speech_recognized)
-        return COMMAND_2_ACTION.get(command)
+        return self._to_action.get(speech_recognized)
 
     def await_for_voice_command(self) -> Union[str, None]:
         r = sr.Recognizer()

@@ -10,34 +10,16 @@ class UserAction(IntEnum):
     UNREADABLE = 5
 
 
-class VoiceCommand(Enum):
-    DATA = 0
-    COPY = 1
-    NEXT = 2
-    UNREADABLE = 3
-    EXIT = 4
-    PREV = 5
-
-
-COMMAND_2_ACTION = {
-    VoiceCommand.DATA: UserAction.DATA_INPUT,
-    VoiceCommand.NEXT: UserAction.NEXT_SCAN,
-    VoiceCommand.EXIT: UserAction.EXIT,
-    VoiceCommand.PREV: UserAction.PREV_SCAN,
-    VoiceCommand.COPY: UserAction.COPY,
-    VoiceCommand.UNREADABLE: UserAction.UNREADABLE,
-}
-
-SPEECH_2_COMMAND = {
-    'dane': VoiceCommand.DATA,
-    'kopia': VoiceCommand.COPY,
-    'następny': VoiceCommand.NEXT,
-    'następne': VoiceCommand.NEXT,
-    'wróć': VoiceCommand.PREV,
-    'poprzedni': VoiceCommand.PREV,
-    'nieczytelny': VoiceCommand.UNREADABLE,
-    'nieczytelne': VoiceCommand.UNREADABLE,
-    'koniec': VoiceCommand.EXIT,
+SPEECH_2_ACTION = {
+    'dane': UserAction.DATA_INPUT,
+    'kopia': UserAction.COPY,
+    'następny': UserAction.NEXT_SCAN,
+    'następne': UserAction.NEXT_SCAN,
+    'wróć': UserAction.PREV_SCAN,
+    'poprzedni': UserAction.PREV_SCAN,
+    'nieczytelny': UserAction.UNREADABLE,
+    'nieczytelne': UserAction.UNREADABLE,
+    'koniec': UserAction.EXIT,
 }
 
 
