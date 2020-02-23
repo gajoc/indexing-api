@@ -28,8 +28,7 @@ def log_exception(logger_name):
             try:
                 return func(*args, **kwargs)
             except Exception as e:
-                logger = GeneiLogger.get_logger(logger_name)
-                logger.exception(e)
+                GeneiLogger.get_logger(logger_name).exception(e)
                 raise
         return wrapper
     return inner_decorator
