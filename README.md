@@ -65,11 +65,11 @@ Run Chrome browser in debug mode:
 
 windows
 
-```chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\selenum\AutomationProfile"```
+```chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\remote-chrome-profile"```
 
 linux
 
-```google-chrome --remote-debugging-port=9222 --user-data-dir=~/AutomationProfile```
+```google-chrome --remote-debugging-port=9222 --user-data-dir=~/remote-chrome-profile```
 
 In project directory run application
 
