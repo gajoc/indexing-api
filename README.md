@@ -47,7 +47,7 @@ installation fails.
 
 Note! PyAudio for linux requires following packages to be installed.
 
-```sudo apt-get install portaudio19-dev python3-pyaudio```
+```sudo apt-get install python3-dev portaudio19-dev python3-pyaudio```
 
 For linux PyAudio python package name is ```pyaudio```. Change it first in `requirements.txt` 
 file. In linux pyaudio works fine in venv.
